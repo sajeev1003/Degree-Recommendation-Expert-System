@@ -1,133 +1,179 @@
-# Degree Recommendation Expert System
+Explainable Degree Recommendation Expert System
 
-A rule-based expert system that assists high school and pre-university students in selecting suitable university degree programmes based on their academic strengths, personality traits, and personal interests.
+EXPERTOS is a browser-based expert system that helps prospective university students explore degree programmes suited to their academic strengths, interests, personality traits, and study preferences.
 
-**Course:** WID2001 Knowledge Representation and Reasoning (KRR)  
-**SDG Alignment:** SDG 4 — Quality Education
+Instead of returning an unexplained answer, the system applies a structured knowledge base and forward-chaining inference to rank suitable programmes and show the reasoning behind each recommendation.
 
----
+Why This Project?
 
-## System Overview
+Choosing a university programme requires students to consider several factors at once. Search engines can provide information, but they do not reason about how a student's characteristics relate to different fields of study.
 
-```
-User Interface (React)  →  Inference Engine (JavaScript)  →  Knowledge Base (KB)
-```
+EXPERTOS models that decision process as an explainable rule-based system. It converts assessment responses into facts, evaluates relevant production rules, scores degree profiles, and presents ranked recommendations that users can understand.
 
-Three mandatory KRR components:
+Core Capabilities
 
-| Component | Location | Description |
-|---|---|---|
-| **Knowledge Base (KB)** | `frontend/src/kb/` | IF-THEN production rules, degree frame profiles, semantic network |
-| **Inference Engine (IE)** | `frontend/src/engine/` | Forward chaining logic — runs entirely in the browser |
-| **User Interface (UI)** | `frontend/src/pages/` | React multi-page app — Landing, Questionnaire, Results |
+Guided assessment covering academic strengths, interests, personality, and preferences
 
-Additional module:
+Knowledge base containing 40 IF-THEN production rules
 
-- **Explanation Facility** — displays which rules fired and why each degree was recommended
+Degree profiles represented as structured frames
 
-> No backend or database required. All reasoning runs entirely in the browser.
+Forward-chaining inference over collected user facts
 
----
+Semantic relationships connecting related traits and study domains
 
-## Knowledge Representation
+Ranked degree recommendations based on accumulated evidence
 
-The Knowledge Base uses three complementary representation types:
+Explanation facility showing why a programme was recommended
 
-| Type | File | Description |
-|---|---|---|
-| Rule-Based (IF-THEN) | `rules_academic.js`, `rules_personality.js`, `rules_interest.js` | 40 production rules grounded in SME expert knowledge |
-| Frame Representation | `degrees.js` | Structured degree profiles with Holland types, subjects, red flags, career paths |
-| Semantic Network | `semantics.js` | Attribute-to-degree relationship graph derived from SME Section D ranking table |
+Responsive React interface for desktop and mobile browsers
 
-**Knowledge source:** Expert elicitation session with a Senior Secondary School Counselor (17 years of advising experience). Rules are organised into three weighted categories:
-- **Academic rules** (ACA-01 to ACA-16) — highest weight, per SME: *"Academic grades directly influence which field students can pursue"*
-- **Personality rules** (PER-01 to PER-09) — based on Holland RIASEC model, referenced by SME for every degree
-- **Interest rules** (INT-01 to INT-15) — based on career goals, hobbies, and favourite activities
+Reasoning Flow
 
----
+flowchart TD
+    A[Student assessment] --> B[Answers converted into facts]
+    B --> C[Forward-chaining inference]
+    D[Rules, frames, and semantic links] --> C
+    C --> E[Degree scores and matched evidence]
+    E --> F[Ranked recommendations with explanations]
 
-## Project Structure
+The inference process follows four main stages:
 
-```
-DegreeRecommendationES/
+Collect facts: The questionnaire captures the student's attributes and preferences.
+
+Match conditions: The engine checks which rule conditions are satisfied.
+
+Fire rules: Matching rules contribute evidence and scores to relevant degree profiles.
+
+Explain results: The highest-scoring programmes are presented together with their supporting reasons.
+
+Knowledge Representation
+
+Component
+
+Purpose
+
+Production rules
+
+Express domain knowledge as IF-THEN relationships
+
+Degree frames
+
+Store the defining characteristics of each programme
+
+Semantic relationships
+
+Connect related interests, traits, skills, and disciplines
+
+Working facts
+
+Represent answers gathered during the assessment
+
+Inference engine
+
+Matches facts to rules and calculates recommendation scores
+
+The rules are separated by domain to keep the knowledge base readable and maintainable:
+
+Academic rules
+
+Interest rules
+
+Personality rules
+
+General recommendation rules
+
+Technology Stack
+
+Area
+
+Technologies
+
+Frontend
+
+React, TypeScript, JavaScript
+
+Styling
+
+CSS
+
+Build tooling
+
+Vite
+
+Reasoning
+
+Custom forward-chaining inference engine
+
+Knowledge base
+
+Modular JavaScript rule and frame definitions
+
+Project Structure
+
+Degree-Recommendation-Expert-System/
+├── docs/                         # Knowledge elicitation, design, and evaluation notes
 ├── frontend/
-│   └── src/
-│       ├── kb/                          # Knowledge Base
-│       │   ├── rules.js                 # Master rule index (combines all 40 rules)
-│       │   ├── rules_academic.js        # Academic & subject rules (ACA-01 to ACA-16)
-│       │   ├── rules_personality.js     # Holland personality rules (PER-01 to PER-09)
-│       │   ├── rules_interest.js        # Interest & hobby rules (INT-01 to INT-15)
-│       │   ├── degrees.js               # Degree frame profiles (8 degrees)
-│       │   ├── semantics.js             # Semantic network (attribute → degree edges)
-│       │   └── questions.js             # Questionnaire question definitions
-│       │
-│       ├── engine/                      # Inference Engine
-│       │   └── inferenceEngine.js       # Forward chaining logic
-│       │
-│       ├── pages/                       # User Interface — pages
-│       │   ├── LandingPage.tsx
-│       │   ├── QuestionnairePage.tsx
-│       │   └── ResultsPage.tsx
-│       │
-│       ├── components/                  # User Interface — reusable components
-│       │   ├── assessment/              # ProgressBar, QuestionCard
-│       │   ├── layout/                  # Header, Footer
-│       │   └── ui/                      # Button, ScoreBar, RecommendationCard
-│       │
-│       └── lib/
-│           └── types.ts                 # TypeScript type definitions
-│
-├── docs/
-│   ├── answer_from_sme.md               # Expert elicitation Q&A (raw SME answers)
-│   ├── components_design.md             # Section 6.2 — KB, IE, and UI design documentation
-│   ├── expert_consultation.md           # Expert consultation record
-│   ├── knowledge_elicitation.md         # Knowledge elicitation session notes
-│   └── testingplan.md                   # Testing strategy and test cases
-│
+│   ├── public/                   # Public web assets
+│   ├── src/
+│   │   ├── components/           # Assessment, layout, and result components
+│   │   ├── engine/               # Forward-chaining inference engine
+│   │   ├── kb/                   # Rules, degree frames, questions, and semantics
+│   │   ├── pages/                # Landing, questionnaire, and results pages
+│   │   └── lib/                  # Shared TypeScript definitions
+│   ├── package.json
+│   └── vite.config.ts
+├── LICENSE
 └── README.md
-```
 
----
+Run Locally
 
-## Degree Programmes Covered
+Prerequisites
 
-1. Computer Science
-2. Engineering
-3. Business Administration
-4. Accounting
-5. Psychology
-6. Mass Communication
-7. Multimedia Design
-8. Medicine
+Node.js
 
----
+npm
 
-## Quick Start
+Installation
 
-```bash
-cd frontend
+git clone https://github.com/sajeev1003/Degree-Recommendation-Expert-System.git
+cd Degree-Recommendation-Expert-System/frontend
 npm install
 npm run dev
-```
 
-Runs at `http://localhost:5173`
+Open the local address printed by Vite, normally http://localhost:5173.
 
----
+Production Build
 
-## Completion Status
+cd frontend
+npm run build
 
-| Component | Status |
-|---|---|
-| Knowledge Base — Academic rules (ACA-01 to ACA-16) | Done |
-| Knowledge Base — Personality rules (PER-01 to PER-09) | Done |
-| Knowledge Base — Interest rules (INT-01 to INT-15) | Done |
-| Knowledge Base — Degree frame profiles (8 degrees) | Done |
-| Knowledge Base — Semantic network | Done |
-| Inference Engine — Forward chaining | Done |
-| Inference Engine — Score normalisation | Done |
-| UI — Landing Page | Done |
-| UI — Questionnaire Page | Done |
-| UI — Results Page | Done |
-| Explanation Facility | Done |
-| Expert consultation | Done |
-| Knowledge elicitation documentation | Done |
+The optimized site is generated in frontend/dist/.
+
+Evaluation
+
+The project documentation includes the knowledge-elicitation process, expert consultation, component design, test planning, and result analysis. During the documented evaluation, the system produced valid recommendations for all eight user profiles, with six matching the expected programme exactly.
+
+Documentation
+
+Additional material is available in docs/, including:
+
+Expert consultation and knowledge elicitation
+
+Knowledge-base and component design
+
+Testing plan and evaluation results
+
+Supporting analysis for the expert-system approach
+
+Project Context
+
+This project was developed for the WID2001 Knowledge Representation and Reasoning course and supports SDG 4: Quality Education by helping students make more informed higher-education choices.
+
+Maintainer
+
+Sajeev Jayaparagasam
+
+License
+
+This project is distributed under the MIT License. See LICENSE for details.
