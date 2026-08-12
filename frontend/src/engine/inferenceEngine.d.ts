@@ -1,0 +1,1 @@
+export function runInference(...args: any[]): any;

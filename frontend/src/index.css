@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'EB Garamond', serif;
+  --font-body: 'Libre Caslon Text', serif;
+  --font-code: 'JetBrains Mono', monospace;
+
+  --color-cream: #ebe8d9;
+  --color-cream-light: #f1eedf;
+  --color-cream-dark: #e6e3d4;
+  --color-ink: #1c1c13;
+  --color-muted: #444748;
+  --color-border: #c4c7c7;
+  --color-accent: #fe825c;
+  --color-terminal: #00ff41;
+  --color-badge-blue: #6185bc;
+  --color-sticker-red: #a23e1e;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: #ebe8d9;
+  }
+}
